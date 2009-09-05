@@ -1483,8 +1483,6 @@ void PaletteSet( char *pal1 )
 	    lastpal = calloc(1, 256*3);
 	  }
 
-	putchar('p');fflush(stdout);
-
 	for (count=0; count<256; count++)
 	  {
 	    if (
