@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <time.h>
 #include "emu_util.h"
 
 #ifdef HAVE_GETTIMEOFDAY
