@@ -1,0 +1,82 @@
+                 \\\\\\\\\  Manic Miner PC v1.00  /////////
+                 ///////// Linux version 1.20beta \\\\\\\\\
+
+Original ZX Spectrum version by Matthew Smith
+            1997 DOS version by Andy Noble   - andy@andyn.demon.co.uk
+                  Linux port by Adam D. Moss - adam@foxbox.org
+
+This README describes the Linux port of Manic Miner.  For more information
+concerning how to play the game itself, please see the file README.dos
+from Andy's DOS version.  Remember; F1 brings up the options menu, F10
+quits.
+
+WHAT IS THIS ?
+--------------
+This is the Linux port of an excellent port of an excellent
+game which first appeared on the ZX Spectrum in 1984.  This binary
+requires a working SVGAlib (plain VGA, nothing fancy), and a sound
+card if you wish to have sound.
+
+WHY ?
+-----
+Manic Miner is a great game, one of the true landmarks in platform
+gaming.  When I saw that Andy Noble had rewritten it in C with enhanced
+graphics and released the source code, I couldn't resist seeing Manic
+Miner resurrected natively on my favourite platform.
+
+HOW ?
+-----
+Manic Miner PC was basically ported to Linux/SVGAlib in three hours,
+was in good shape after another two hours, and had sound in another
+two hours.  However, the DOS version uses a binary-only library, MIDAS,
+for sound and music.  I have reimplemented the appropriate portion of the
+MIDAS API on top of MikMod, for full sound and music.
+
+SOURCE
+------
+The source for this Linux port will be released RSN.  Keep bugging me.
+When I have time I will make a Manic Miner Linux page at
+http://www.ws.pipex.com/home/adam/mm/ so you can check if there have
+been more recent versions released.
+The source (and binary) for the native DOS version of Manic Miner PC
+is to be found at Andy's home page: http://www.andyn.demon.co.uk/
+
+If you try the DOS version, please tell me how the speed/whatever
+compares with the Linux version, as I've never seen or played the
+DOS version.
+
+
+Have fun!
+
+Adam D. Moss
+adam@foxbox.org
+
+
+TO DO
+-----
+* Keyboard overhaul - partially done, for X11
+* X11 port - partially done
+* GGI port
+* Why is MikMod so whacky? - try a more recent version
+* See if Andy wants to let me make this GPL'd.
+
+
+REVISIONS
+---------
+
+1.00 beta
+97/12/07 - Initial Linux release.  Binary/SVGA only.
+
+1.05 beta
+97/12/25 - Added music and better sound support using the MikMod
+           3.0.1 library.
+
+1.06 beta
+98/07/25 - Recompiled for a not-crap libc5/svgalib so that hopefully
+           more people can run the binary.  SOURCE SOON.
+
+1.20 beta
+99/06/16 - Partially done X11 port, dirty source release.  Largely
+           run out of time and interest.
+
+
