@@ -134,7 +134,8 @@ void init_Xdisplay(char *name)
 
   has_colourmap = (DefaultVisual(display,screen)->class&1);
   depth = DefaultDepth(display,screen);
-  depth_bytes = bytesdeep = (int)ceil(((double)depth)/8.0);
+  bytesdeep = (int)ceil(((double)depth)/8.0);
+  depth_bytes = bytesdeep = bytesdeep == 3 ? 4 : bytesdeep;
 
   printf("%d \n\n", depth_bytes);
 
