@@ -64,8 +64,13 @@ typedef unsigned char      uint8;
 /************** X INIT STUFF *********************************/
 #ifdef USE_X11
 
-int wwidth = 320;
-int wheight = 200;
+#define MAG 2
+#define XMAG MAG
+#define YMAG MAG
+#define WIDTH 320
+#define HEIGHT 200
+int wwidth = WIDTH * XMAG;
+int wheight = HEIGHT * YMAG;
 
 Colormap cmap;
 Display *display;
@@ -960,7 +965,8 @@ int main(int argc, BYTE *argv[])
 	realscreen=(BYTE*) vga_getgraphmem();
 #endif
 
-	pix_offset = 33 + 4*320;  /* for screen centering in this mode */
+        pix_offset = 33 + 4*WIDTH;  /* for screen centering in this mode */
+	//pix_offset = (XMAG * 33) + (YMAG * WIDTH * 4);  /* for screen centering in this mode */
 
 
 	if(argc==2)	
@@ -1391,20 +1397,28 @@ void WaitVR3( void )
 
 void PlotPixel( int x, int y, BYTE colour )
 {
-  int offset = 320*y + x + pix_offset;
+  int offset = WIDTH*y + x + pix_offset;
 
   screen[offset] = colour;
 
 #ifdef USE_X11
+  y = offset / WIDTH;
+  x = offset % WIDTH;
+
   switch (bytesdeep)
     {
     case 1:
       ((uint8 *)ximage->data)[offset] = ((uint8 *)pix)[colour]; break;
     case 2:
       ((uint16 *)ximage->data)[offset] = ((uint16 *)pix)[colour]; break;
-    default:
-      ((uint32 *)ximage->data)[offset] = ((uint32 *)pix)[colour]; break;      
-    }
+    default: {
+      int xx, yy;
+      for (xx = 0; xx < XMAG; xx++)
+        for (yy = 0; yy < YMAG; yy++)
+          ((uint32 *)ximage->data)[(y * XMAG + yy) * YMAG * WIDTH
+            + xx + x * XMAG] = ((uint32 *)pix)[colour];
+      break;
+    }}
 #endif
 }
 
@@ -1413,7 +1427,7 @@ void PlotPixel( int x, int y, BYTE colour )
 /////////////////////////////////////////////////////////////*/	
 char GetPixel( int x, int y )
 {
-  return (screen[320*y + x + pix_offset]);
+  return (screen[WIDTH*y + x + pix_offset]);
 }
 
 /*/////////////////////////////////////////////////////////////	
