@@ -64,7 +64,7 @@ typedef unsigned char      uint8;
 /************** X INIT STUFF *********************************/
 #ifdef USE_X11
 
-#define MAG 2
+#define MAG 4
 #define XMAG MAG
 #define YMAG MAG
 #define WIDTH 320
