@@ -576,7 +576,9 @@ void	DrawAir(void)
 		if(cAIR<=33)	
 		{	
 			cAIR=33;	
+#if 0	
 			cWILLYm=6;	
+#endif
 		}	
 	}	
 	
@@ -1674,7 +1676,8 @@ void	DoWilly(void)
 	int	input,block1,block2;	
 	
 	input=GetWillyInput();	
-	
+
+#if 0	
 //------------------------------------------------------------------------------	
 	if(CheckWillyKillBlock()!=0)	
 		cWILLYm=6;	
@@ -1682,6 +1685,7 @@ void	DoWilly(void)
 	if(WillyCheckRobo()!=0)	
 		cWILLYm=6;	
 //------------------------------------------------------------------------------	
+#endif
 	if(cWILLYm==0)	
 	{	
 		CheckWillyFall();	
@@ -2044,10 +2048,12 @@ void	CheckWillyFall(void)
 	}	
 	else	
 	{	
+#if 0	
 		if((block1==5)||(block2==5)||(block1==6)||(block2==6))	
 		{	
 			cWILLYm=6;	
 		}	
+#endif
 	}	
 }	
 ///////////////////////////////////////////////////////////////	
@@ -2076,8 +2082,10 @@ void	DoWillyFall(void)
 			cWILLYm=5;	
 			cCONVm=0;	
 		}	
-		if(cWILLYfall>=32)	
+		if(cWILLYfall>=32)	{}
+#if 0	
 			cWILLYm=6;	
+#endif
 		else	
 			cWILLYfall=0;	
 	}	
