@@ -898,7 +898,7 @@ BYTE	MUSICh;
 //WORD	volatile	FrCt=0;	*/
 WORD    FrCt=0;
 /* 60 Hz */
-#define FHZ 60
+#define FHZ 17
 #define microsec_per_frame 16666
 WORD    UpdateFrCt(void)
 {
