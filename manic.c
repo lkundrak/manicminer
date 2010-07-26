@@ -64,13 +64,13 @@ typedef unsigned char      uint8;
 /************** X INIT STUFF *********************************/
 #ifdef USE_X11
 
-#define MAG 4
-#define XMAG MAG
-#define YMAG MAG
+#define XMAG mag
+#define YMAG mag
 #define WIDTH 320
 #define HEIGHT 200
-int wwidth = WIDTH * XMAG;
-int wheight = HEIGHT * YMAG;
+#define WWIDTH (WIDTH * XMAG)
+#define WHEIGHT (HEIGHT * YMAG)
+int mag = 1;
 
 Colormap cmap;
 Display *display;
@@ -130,8 +130,13 @@ void init_Xdisplay(char *name)
     error("Cannot open display.\n");
   
   screen = DefaultScreen(display);
+  mag = (DisplayWidth(display, screen) - 32) / WIDTH;
+  if ((DisplayHeight(display, screen) - 32) / HEIGHT < mag)
+    {
+      mag = DisplayHeight(display, screen) / HEIGHT;
+    }
 
-  printf("DefaultDepth: %d, DisplayCells: %d, defaultvisualid: %ld, defaultclass: %d, BYTESDEEP: ",
+  printf("DefaultDepth: %d, DisplayCells: %d, defaultvisualid: %ld, defaultclass: %d, BYTESDEEP: \n",
 	 DefaultDepth(display,screen),
 	 DisplayCells(display,screen),
 	 DefaultVisual(display,screen)->visualid,
@@ -150,8 +155,8 @@ void init_Xdisplay(char *name)
     }
 
   
-  hint.width = hint.max_width = hint.min_width = wwidth;
-  hint.height = hint.max_height =hint.min_height = wheight;
+  hint.width = hint.max_width = hint.min_width = WWIDTH;
+  hint.height = hint.max_height =hint.min_height = WHEIGHT;
 
   hint.flags = PSize|PMinSize|PMaxSize;
 
@@ -204,7 +209,7 @@ void init_Xdisplay(char *name)
     {
       ximage = XShmCreateImage(display, None, depth, ZPixmap, NULL,
 			       &shminfo1,
-			       wwidth, wheight);
+			       WWIDTH, WHEIGHT);
 
       /* If no go, then revert to normal Xlib calls. */
 
@@ -218,7 +223,7 @@ void init_Xdisplay(char *name)
       /* Success here, continue. */
 
       shminfo1.shmid = shmget(IPC_PRIVATE, 
-			      wwidth*wheight*depth_bytes,
+			      WWIDTH*WHEIGHT*depth_bytes,
 			      IPC_CREAT | 0777);
 
       if (shminfo1.shmid<0)
@@ -257,7 +262,7 @@ void init_Xdisplay(char *name)
 	  shmctl(shminfo1.shmid, IPC_RMID, 0);
 	}
 
-      fprintf(stderr, "Sharing memory. [ %d x %d ]\n",wwidth,wheight);
+      fprintf(stderr, "Sharing memory. [ %d x %d ]\n",WWIDTH,WHEIGHT);
     }
 
   DeInstallXErrorHandler();
@@ -1307,14 +1312,14 @@ void showscreen(void)
       XShmPutImage(display, window, gc, ximage,
 		   0,0,
 		   0,0,
-		   wwidth, wheight, False);
+		   WWIDTH, WHEIGHT, False);
     }
   else
     {
       XPutImage(display, window, gc, ximage,
 		   0,0,
 		   0,0,
-		   wwidth, wheight);
+		   WWIDTH, WHEIGHT);
     }
   XSync(display, False);
 #else
@@ -1446,12 +1451,12 @@ void Cls( BYTE col )
     {
     case 1:
       pcol = ((uint8 *)pix)[col];
-      memset((uint8 *)ximage->data, pcol, wwidth*wheight);
+      memset((uint8 *)ximage->data, pcol, WWIDTH*WHEIGHT);
       break;
     case 2:
       pcol = ((uint16 *)pix)[col];
       u16p = (uint16 *)ximage->data;
-      for (i=0;i<wwidth*wheight;i++)
+      for (i=0;i<WWIDTH*WHEIGHT;i++)
 	{
 	  *u16p++ = pcol;
 	}
@@ -1459,7 +1464,7 @@ void Cls( BYTE col )
     default:
       pcol = ((uint32 *)pix)[col];
       u32p = (uint32 *)ximage->data;
-      for (i=0;i<wwidth*wheight;i++)
+      for (i=0;i<WWIDTH*WHEIGHT;i++)
 	{
 	  *u32p++ = pcol;
 	}
